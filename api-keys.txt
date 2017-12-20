@@ -1,0 +1,7 @@
+Application ID：9c6fa177751af00a3aec58833af93a6d247f855370157a428833bded63f75f1f
+Secret：
+298e2a66ead53e2896f9ac5d006fc296bc83264fe1cbeea6492de72397f5ef2a
+Callback URLs
+http://localhost:80/Ch6
+
+API Key for the Article Search API: 5bc3c31c85624f528ffc7de1245ee24f
