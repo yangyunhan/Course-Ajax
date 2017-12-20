@@ -38,20 +38,36 @@
             responseContainer.insertAdjacentHTML('afterbegin', htmlContent);
         }
 
+
         const articleRequest = new XMLHttpRequest();
         articleRequest.onload = addArticle;
-        articleRequest.open('GET', `http://nytimes.com/search/v2/articlesearch.json?q=${searchedForText}$api-key=<5bc3c31c85624f528ffc7de1245ee24f>`);
-        articleRequest.setRequestHeader('api-key','5bc3c31c85624f528ffc7de1245ee24f');
+        articleRequest.onerror = function (err) {
+            requestError(err, 'article');
+        };
+        articleRequest.open('GET', `http://api.nytimes.com/svc/search/v2/articlesearch.json?q=${searchedForText}&api-key = 5bc3c31c85624f528ffc7de1245ee24f`);
+        //articleRequest.setRequestHeader('api-key','5bc3c31c85624f528ffc7de1245ee24f');
         //articleRequest.setRequestHeader('origin','http://nytimes.com/');
         articleRequest.send();
         function addArticle() {
-            let articleContent = '';
-            const articledata = JSON.parse(this.responseText);
-            const firstarticle = articledata.results[0];
-            console.log(firstarticle);
-            if(articledata && articledata.results && articledata[0]){
+            let htmlContent = '';
+            const data = JSON.parse(this.responseText);
 
+            if(data.response && data.response.docs && data.response.docs.length > 1){
+                htmlContent = '<ul>' + data.response.docs.map(article => `<li class="article">
+                    <h2><a href="${article.web_url}">${article.headline.main}</a></h2>
+                    <p>${article.snippet}</p>
+                </li>`
+                ).join('') + '</ul>';
+            } else {
+                htmlContent = '<div class="error-no-articles">No articles available</div>';
             }
+
+            responseContainer.insertAdjacentHTML('beforeend', htmlContent);
+        }
+
+        function requestError(e, part) {
+            console.log(e);
+            responseContainer.insertAdjacentHTML('beforeend',  `<p class="network-warning error-${part}">Oh no!`);
         }
     });
 })();
