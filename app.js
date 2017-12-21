@@ -7,12 +7,7 @@
         e.preventDefault();
         responseContainer.innerHTML = '';
         searchedForText = searchField.value;
-        /*searchedForText = 'hippos';
-        const unsplashRequest = new XMLHttpRequest();
-        unsplashRequest.open('GET',`https://api.unsplash.com/search/photos?page=1&query=${searchedForText}`);
-        unsplashRequest.onload = addImage;
-        unsplashRequest.setRequestHeader('Authorization', 'Client-ID 9c6fa177751af00a3aec58833af93a6d247f855370157a428833bded63f75f1f');
-        unsplashRequest.send();*/
+
         const imgRequest = new XMLHttpRequest();
         imgRequest.onload = addImage;
         imgRequest.onerror = function (err) {
@@ -25,7 +20,6 @@
             let htmlContent = '';
             const data = JSON.parse(this.responseText);
             const firstImage = data.results[0];
-            //console.log(firstImage);
             if(data && data.results && data.results[0]){
                 htmlContent = `<figure>
                 <img src="${firstImage.urls.regular}" alt="${searchedForText}">
@@ -44,9 +38,7 @@
         articleRequest.onerror = function (err) {
             requestError(err, 'article');
         };
-        articleRequest.open('GET', `http://api.nytimes.com/svc/search/v2/articlesearch.json?q=${searchedForText}&api-key = 5bc3c31c85624f528ffc7de1245ee24f`);
-        //articleRequest.setRequestHeader('api-key','5bc3c31c85624f528ffc7de1245ee24f');
-        //articleRequest.setRequestHeader('origin','http://nytimes.com/');
+        articleRequest.open('GET', `http://api.nytimes.com/svc/search/v2/articlesearch.json?api-key=5bc3c31c85624f528ffc7de1245ee24f&q=${searchedForText}`);
         articleRequest.send();
         function addArticle() {
             let htmlContent = '';
